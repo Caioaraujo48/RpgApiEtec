@@ -2,6 +2,7 @@
 using AppRpgEtec.Models.Enuns;
 using AppRpgEtec.Models.Personagens;
 using AppRpgEtec.Services.Personagens;
+using Microsoft.Maui.Controls;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -12,11 +13,13 @@ using System.Windows.Input;
 
 namespace AppRpgEtec.ViewModels.Personagens
 {
+    [QueryProperty("PersonagemSelecionadoId", "pId")]
     public class CadastroPersonagemViewModel : BaseViewModel
     {
         private PersonagemService pService;
         public ICommand SalvarCommand { get; }
         public ICommand CancelarCommand { get; set; }
+        public ICommand CarregarCommand { get; set; }
 
         public CadastroPersonagemViewModel()
         {
@@ -26,6 +29,7 @@ namespace AppRpgEtec.ViewModels.Personagens
 
             SalvarCommand = new Command(async ()=> { await SalvarPersonagem(); });
             CancelarCommand = new Command(async () => { CancelarCadastro(); });
+            CarregarCommand = new Command(async () => { SalvarPersonagem(); });
         }
 
         private int id;
@@ -193,6 +197,8 @@ namespace AppRpgEtec.ViewModels.Personagens
                 };
                 if (model.Id == 0)
                     await pService.PostPersonagemAsync(model);
+                else
+                    await pService.PutPersonagemAsync(model);
 
                 await Application.Current.MainPage
                     .DisplayAlert("Mensagem", "Dados salvos com sucesso!", "Ok");
@@ -205,9 +211,51 @@ namespace AppRpgEtec.ViewModels.Personagens
                     .DisplayAlert("Ops", ex.Message + " Detalhes: " + ex.InnerException, "Ok");
             }
         }
+
         private async void CancelarCadastro()
         {
             await Shell.Current.GoToAsync("..");
+        }
+
+        public async void CarregarPersonagem()
+        {
+            try
+            {
+                Personagem p = await
+                    pService.GetPersonagemAsync(int.Parse(personagemSelecionadoId));
+
+                this.Nome = p.Nome;
+                this.PontosVida = p.PontosVida;
+                this.Defesa = p.Defesa;
+                this.Derrotas = p.Derrotas;
+                this.Disputas = p.Disputas;
+                this.Forca = p.Forca;
+                this.Inteligencia = p.Inteligencia;
+                this.Vitorias = p.Vitorias;
+                this.Id = p.Id;
+
+                TipoClasseSelecionado = this.ListaTiposClasse
+                    .FirstOrDefault(tClasse => tClasse.Id == (int)p.Classe);
+            }
+            catch (Exception ex) 
+            {
+                await Application.Current.MainPage
+                    .DisplayAlert("Ops", ex.Message + " Detalhes: " + ex.InnerException, "Ok");
+            }
+        }
+
+        private string personagemSelecionadoId;
+
+        public string PersonagemSelecionadoId
+        {
+            set 
+            {
+                if (value != null)
+                {
+                    PersonagemSelecionadoId = Uri.UnescapeDataString(value);
+                    CarregarPersonagem();
+                }
+            }
         }
     }
 }
