@@ -1,6 +1,5 @@
 ﻿using AppRpgEtec.Models;
 using AppRpgEtec.Models.Enuns;
-using AppRpgEtec.Models.Personagens;
 using AppRpgEtec.Services.Personagens;
 using Microsoft.Maui.Controls;
 using System;

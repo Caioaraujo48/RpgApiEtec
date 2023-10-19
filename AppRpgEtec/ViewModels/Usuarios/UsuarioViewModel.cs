@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 
 using AppRpgEtec.Services;
-using AppRpgEtec.Models.Usuarios;
 using AppRpgEtec.Services.Usuarios;
 using AppRpgEtec.Views.Usuarios;
+using AppRpgEtec.Models;
 
 namespace AppRpgEtec.ViewModels.Usuarios
 {

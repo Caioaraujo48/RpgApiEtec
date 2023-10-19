@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using AppRpgEtec.Models.Personagens;
+using AppRpgEtec.Models;
 
 namespace AppRpgEtec.Services.Personagens
 {

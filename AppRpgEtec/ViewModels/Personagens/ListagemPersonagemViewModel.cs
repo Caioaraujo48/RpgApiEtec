@@ -1,4 +1,4 @@
-﻿using AppRpgEtec.Models.Personagens;
+﻿using AppRpgEtec.Models;
 using AppRpgEtec.Services.Personagens;
 using System;
 using System.Collections.Generic;

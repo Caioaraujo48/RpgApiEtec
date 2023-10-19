@@ -1,4 +1,4 @@
-﻿using AppRpgEtec.Models.Usuarios;
+﻿using AppRpgEtec.Models;
 using AppRpgEtec.Services.Usuarios;
 using Microsoft.Maui.Controls.Maps;
 using Microsoft.Maui.Maps;

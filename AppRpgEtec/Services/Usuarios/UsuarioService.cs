@@ -3,11 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
 using AppRpgEtec.Services;
-using AppRpgEtec.Models.Usuarios;
 using System.Collections.ObjectModel;
-using AppRpgEtec.Models.Personagens;
+using AppRpgEtec.Models;
 
 namespace AppRpgEtec.Services.Usuarios
 {
@@ -59,6 +57,21 @@ namespace AppRpgEtec.Services.Usuarios
             ObservableCollection<Usuario> listaUsuario = await 
                 _request.GetAsync<ObservableCollection<Usuario>>(apiUrlBase + urlComplementar, _token);
             return listaUsuario;
+        }
+
+        public async Task<int> PutFotoUsuarioAsync(Usuario u)
+        {
+            string urlComplementar = "/AtualizarFoto";
+            var result = await _request.PutAsync(apiUrlBase + urlComplementar, u, _token);
+            return result;
+        }
+
+        public async Task<Usuario> GetUsuarioAsync(int usuarioId)
+        {
+            string urlComplementar = string.Format("/{0}", usuarioId);
+            var usuario = await 
+                _request.GetAsync<Usuario>(apiUrlBase + urlComplementar, _token);
+            return usuario;
         }
     }
 }
