@@ -19,9 +19,11 @@ namespace AppRpgEtec.ViewModels.Usuarios
             string token = Preferences.Get("UsuarioToken", string.Empty);
             uService = new UsuarioService(token);
 
-            //            AbrirGaleriaCommand = new Command(AbrirGaleria);
+            AbrirGaleriaCommand = new Command(AbrirGaleria);
             SalvarImagemCommand = new Command(SalvarImagem);
             FotografarCommand = new Command(Fotografar);
+
+            CarregarUsuario();
         }
 
         public ICommand AbrirGaleriaCommand { get; }
@@ -117,7 +119,7 @@ namespace AppRpgEtec.ViewModels.Usuarios
             }
         }
 
-        public async void AbrirGaleira()
+        public async void AbrirGaleria()
         {
             try
             {
@@ -143,6 +145,22 @@ namespace AppRpgEtec.ViewModels.Usuarios
                 return;
             }
             catch (Exception ex)
+            {
+                await Application.Current.MainPage
+                    .DisplayAlert("Ops", ex.Message + " Detalhes: " + ex.InnerException, "Ok");
+            }
+        }
+        
+        public async void CarregarUsuario()
+        {
+            try
+            {
+                int usuarioId = Preferences.Get("UsuarioId", 0);
+                Usuario u = await uService.GetUsuarioAsync(usuarioId);
+
+                Foto = u.Foto;
+            }
+            catch (Exception ex) 
             {
                 await Application.Current.MainPage
                     .DisplayAlert("Ops", ex.Message + " Detalhes: " + ex.InnerException, "Ok");
