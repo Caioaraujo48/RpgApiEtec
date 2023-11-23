@@ -51,5 +51,16 @@ namespace AppRpgEtec.Services.Personagens
             return result;
         }
 
+        public async Task<ObservableCollection<Personagem>> GetPersonagensByNomeAsync(string busca)
+        {
+            string urlComplementar = string.Format("{0}", "/GetAll");
+
+            ObservableCollection<Models.Personagem> listaPersonagens = await
+                _request.GetAsync<ObservableCollection<Models.Personagem>>(apiUrlBase + urlComplementar, _token); 
+            
+            var personagensFiltrados = listaPersonagens.Where(p => p.Nome.ToLower().Contains(busca.ToLower()));
+
+            return new ObservableCollection<Personagem>(personagensFiltrados);
+        }
     }
 }
